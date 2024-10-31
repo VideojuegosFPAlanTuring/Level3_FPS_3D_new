@@ -6,6 +6,7 @@ public class TestMerge : MonoBehaviour
     void Start()
     {
         //Comentario de prueba
+        Debug.Log("Prueba rama");
     }
 
     // Update is called once per frame
