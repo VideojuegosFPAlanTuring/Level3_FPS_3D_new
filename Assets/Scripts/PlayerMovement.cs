@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
     //Components
     private CharacterController characterController;
     private Transform cameraTransform;
+    private WeaponController weaponController;
 
     //movement and jump configuration parameters
     [SerializeField] private float speed = 5f;
@@ -34,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();
         cameraTransform = Camera.main.transform;
+        weaponController = GetComponent<WeaponController>();
 
         //Hide mouse cursor
         Cursor.lockState = CursorLockMode.Locked;
@@ -89,6 +91,15 @@ public class PlayerMovement : MonoBehaviour
         //when action started or mantained
         isSprinting = context.started || context.performed;
     } 
+
+    /// <summary>
+    /// When action shoot check if can shoot and shoot
+    /// </summary>
+    /// <param name="context"></param>
+    public void Shoot(InputAction.CallbackContext context)
+    {
+        if (weaponController.CanShoot()) weaponController.Shoot();
+    }
 
     /// <summary>
     /// Handles player movement and jump based on Input and applies gravity
