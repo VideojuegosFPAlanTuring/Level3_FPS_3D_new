@@ -4,7 +4,11 @@ using UnityEngine;
 public class BulletController : MonoBehaviour
 {
     [Header("Bullet Info")]
-    [SerializeField] private float activeTime;    
+    [SerializeField] private float activeTime;
+
+    [Header("Particles")]
+    [SerializeField] private GameObject damageParticle;    
+    [SerializeField] private GameObject impactParticle;
 
     private int damage;
 
@@ -28,7 +32,27 @@ public class BulletController : MonoBehaviour
         //Deactive the bullet
         gameObject.SetActive(false);
 
-        //TODO Collision with enemy or player or floor or wall or object
+        //Collision with enemy or player or floor or wall or object
+        if (other.CompareTag("Enemy"))
+        {
+            //Instatiate damageParticle "Blood"
+            GameObject particles = Instantiate(damageParticle,transform.position, Quaternion.identity);
+            //Create Damage on Enemy
+            other.GetComponent<EnemyController>().DamageEnemy(damage);
+
+        }else if (other.CompareTag("Player"))
+        {
+            //Instatiate damageParticle "Blood"
+            GameObject particles = Instantiate(damageParticle, transform.position, Quaternion.identity);
+            //TODO reduce life to Player
+
+
+        }
+        else
+        {
+            //Instatiate "Impact"Particle 
+            GameObject particles = Instantiate(impactParticle, transform.position, Quaternion.identity);
+        }
 
     }
 

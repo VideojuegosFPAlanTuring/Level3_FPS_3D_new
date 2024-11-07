@@ -150,3 +150,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activeTime: 1
+  damageParticle: {fileID: 1968586304485042, guid: eeaf9399b4fcf9d429507369fb3a2fce, type: 3}
+  impactParticle: {fileID: 1037864198121816, guid: c0b020586537c684f81c2af594c80d52, type: 3}

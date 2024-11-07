@@ -121,8 +121,8 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     /// <param name="context"></param>
     public void Shoot(InputAction.CallbackContext context)
-    {
-        if (weaponController.CanShoot()) weaponController.Shoot();
+    {        
+        if (weaponController.CanShoot() && context.started) weaponController.Shoot();
     }
 
     /// <summary>
