@@ -1,6 +1,6 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections.Generic;
 
 public class EnemyController : MonoBehaviour
 {
@@ -9,6 +9,11 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private int maxLife;
     [SerializeField] private int enemyScorePoint;
 
+    [Header("Patrol")]
+    [SerializeField] private GameObject patrolPointsContainer;
+    private List<Transform> patrolPoints = new List<Transform>();
+    private int destinationPoint = 0; //internal index to next destination
+    private bool isChasing = false ; //is Chasing Player
 
     private NavMeshAgent agent;
 
@@ -23,13 +28,43 @@ public class EnemyController : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         weaponController = GetComponent<WeaponController>();
+
+        //Take all the children of patrolPointContainer and add them in the patrolPoints array
+        foreach (Transform child in patrolPointsContainer.transform)
+            patrolPoints.Add(child);
+
+        //First time go to Next Patrol
+        GotoNextPatrolPoint();
     }
 
 
     private void Update()
     {
+        //search player with Ray Cast
         SearchPlayer();
+
+        //Choose next destination point when the agents get close to the current one
+        if (!isChasing && !agent.pathPending && agent.remainingDistance < 3f)
+            GotoNextPatrolPoint();
     }
+
+    /// <summary>
+    /// Enemy Go to next destinationPoint
+    /// </summary>
+    private void GotoNextPatrolPoint()
+    {
+        //Restart the stopping distance to 0 to posibility the Patrol
+        agent.stoppingDistance = 0f;
+
+        //set the agent to the currently destination Point
+        agent.SetDestination(patrolPoints[destinationPoint].position);
+
+        //choose next destinationPoint in the List
+        //cycling to the start if necessary
+        destinationPoint = (destinationPoint + 1) % patrolPoints.Count;
+
+    }
+
 
     /// <summary>
     /// Enemy search and go towards player
@@ -41,20 +76,34 @@ public class EnemyController : MonoBehaviour
         if (!agent.Raycast(playerTransform.position, out hit))
         {
             //Go towards Player only if is at 10m or lower
-            if (hit.distance <= 10f) { 
-                    agent.SetDestination(playerTransform.position);
-                    agent.stoppingDistance = 5f;
-                    transform.LookAt(playerTransform.position);
+            if (hit.distance <= 10f)
+            {
+                agent.SetDestination(playerTransform.position);
+                agent.stoppingDistance = 5f;
+                transform.LookAt(playerTransform.position);
+                isChasing = true; //Chase Player
 
-                    //shoot Player if distance between them is lower than 7m
-                    if (hit.distance <= 7f)
-                    {
-                        if (weaponController.CanShoot())
-                            weaponController.Shoot();
-                    }
+                //shoot Player if distance between them is lower than 7m
+                if (hit.distance <= 7f)
+                {
+                    if (weaponController.CanShoot())
+                        weaponController.Shoot();
+                }
 
             }
-
+            //If the player more than 10f distance
+            else
+            {
+                isChasing = false;
+                GotoNextPatrolPoint();
+            }
+        }
+        //Player Not in the Ray Cast 
+        else
+        {
+            isChasing = false;
+            if (!agent.pathPending && agent.remainingDistance < 3f)
+                GotoNextPatrolPoint();
         }
 
     }
