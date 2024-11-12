@@ -54,17 +54,20 @@ public class EnemyController : MonoBehaviour
     /// </summary>
     private void GotoNextPatrolPoint()
     {
+        if (agent.remainingDistance <= 0.5f)
+        {
+            //choose next destinationPoint in the List
+            //cycling to the start if necessary
+            destinationPoint = (destinationPoint + 1) % patrolPoints.Count;
+        }
+
         //Restart the stopping distance to 0 to posibility the Patrol
         agent.stoppingDistance = 0f;
 
         //set the agent to the currently destination Point
         agent.SetDestination(patrolPoints[destinationPoint].position);
 
-        if (agent.remainingDistance <= 0.5f) { 
-            //choose next destinationPoint in the List
-            //cycling to the start if necessary
-            destinationPoint = (destinationPoint + 1) % patrolPoints.Count;
-        }
+        
 
     }
 
