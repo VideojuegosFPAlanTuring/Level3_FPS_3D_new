@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections.Generic;
+using System;
 
 public class EnemyController : MonoBehaviour
 {
@@ -59,9 +60,11 @@ public class EnemyController : MonoBehaviour
         //set the agent to the currently destination Point
         agent.SetDestination(patrolPoints[destinationPoint].position);
 
-        //choose next destinationPoint in the List
-        //cycling to the start if necessary
-        destinationPoint = (destinationPoint + 1) % patrolPoints.Count;
+        if (agent.remainingDistance <= 0.5f) { 
+            //choose next destinationPoint in the List
+            //cycling to the start if necessary
+            destinationPoint = (destinationPoint + 1) % patrolPoints.Count;
+        }
 
     }
 
@@ -78,10 +81,21 @@ public class EnemyController : MonoBehaviour
             //Go towards Player only if is at 10m or lower
             if (hit.distance <= 10f)
             {
-                agent.SetDestination(playerTransform.position);
-                agent.stoppingDistance = 5f;
-                transform.LookAt(playerTransform.position);
                 isChasing = true; //Chase Player
+                agent.SetDestination(playerTransform.position);
+                agent.stoppingDistance = 3f;
+                transform.LookAt(playerTransform.position);
+            
+                
+                //Stop Enemy at 5m 
+                if (hit.distance < 5f) 
+                {
+                    agent.isStopped = true;
+                }
+                else
+                {
+                    agent.isStopped = false;
+                }
 
                 //shoot Player if distance between them is lower than 7m
                 if (hit.distance <= 7f)
@@ -89,21 +103,19 @@ public class EnemyController : MonoBehaviour
                     if (weaponController.CanShoot())
                         weaponController.Shoot();
                 }
-
             }
             //If the player more than 10f distance
             else
             {
+                agent.isStopped = false;
                 isChasing = false;
-                GotoNextPatrolPoint();
             }
         }
         //Player Not in the Ray Cast 
         else
         {
+            agent.isStopped = false;
             isChasing = false;
-            if (!agent.pathPending && agent.remainingDistance < 3f)
-                GotoNextPatrolPoint();
         }
 
     }
