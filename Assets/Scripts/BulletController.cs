@@ -44,8 +44,8 @@ public class BulletController : MonoBehaviour
         {
             //Instatiate damageParticle "Blood"
             GameObject particles = Instantiate(damageParticle, transform.position, Quaternion.identity);
-            //TODO reduce life to Player
-
+            //reduce life to Player
+            other.GetComponent<PlayerController>().DamagePlayer(damage);
 
         }
         else

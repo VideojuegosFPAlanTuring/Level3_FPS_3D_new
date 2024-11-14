@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections.Generic;
-using System;
+
 
 public class EnemyController : MonoBehaviour
 {
@@ -33,6 +33,9 @@ public class EnemyController : MonoBehaviour
         //Take all the children of patrolPointContainer and add them in the patrolPoints array
         foreach (Transform child in patrolPointsContainer.transform)
             patrolPoints.Add(child);
+
+        //Randomly choose first destination point
+        destinationPoint = Random.Range(0, patrolPoints.Count);
 
         //First time go to Next Patrol
         GotoNextPatrolPoint();

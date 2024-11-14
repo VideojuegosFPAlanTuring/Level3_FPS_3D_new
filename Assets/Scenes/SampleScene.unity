@@ -253,6 +253,7 @@ GameObject:
   - component: {fileID: 39128210}
   - component: {fileID: 39128209}
   - component: {fileID: 39128208}
+  - component: {fileID: 39128212}
   m_Layer: 5
   m_Name: HUD
   m_TagString: Untagged
@@ -345,6 +346,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &39128212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 39128207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a465ca8ae70f6bf4ab898fb26e107f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageFlash: {fileID: 612330997}
+  damageTime: 0.5
 --- !u!1 &69412762
 GameObject:
   m_ObjectHideFlags: 0
@@ -8457,6 +8472,7 @@ GameObject:
   - component: {fileID: 1685236751}
   - component: {fileID: 1685236756}
   - component: {fileID: 1685236755}
+  - component: {fileID: 1685236757}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -8726,6 +8742,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabObject: {fileID: 8625633485358756622, guid: b430e67d68a17f84e88c6b50b478a7ca, type: 3}
   objectsNumberOnStart: 5
+--- !u!114 &1685236757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1685236750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f02c6aa6f09dee845b7b6988a7c9c0d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxLives: 0
 --- !u!1 &1757364283
 GameObject:
   m_ObjectHideFlags: 0
