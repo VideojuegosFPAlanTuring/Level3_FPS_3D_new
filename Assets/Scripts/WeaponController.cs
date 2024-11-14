@@ -19,6 +19,8 @@ public class WeaponController : MonoBehaviour
 
     private bool isPlayer;
 
+    public float ShootRate { get => shootRate; set => shootRate = value; }
+
     private void Awake()
     {
         //Check if I am a Player
@@ -35,7 +37,7 @@ public class WeaponController : MonoBehaviour
     public bool CanShoot()
     {
         //Check shootRate
-        if (Time.time - lastShootTime >= shootRate)
+        if (Time.time - lastShootTime >= ShootRate)
         {
             //Check Ammo
             if (currentAmmo >0 || infiniteAmmo)
